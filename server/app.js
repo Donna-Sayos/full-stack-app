@@ -1,6 +1,6 @@
 const path = require('path'); // is a Node module for working with file and directory paths;
 const express = require('express'); // is a Node module for creating a server;
-const morgan = require('morgan'); // is a middleware for Node... logger
+const morgan = require('morgan'); // is a middleware for Node... logger;
 
 const app = express(); // returns an instance of an Express Application;
 
