@@ -1,11 +1,14 @@
-const path = require('path'); // is a Node module for working with file and directory paths;
 const express = require('express'); // is a Node module for creating a server;
 const morgan = require('morgan'); // is a middleware for Node... logger;
+const cors = require('cors'); // is a middleware for Node... cross-origin resource sharing;
+const path = require('path'); // is a Node module for working with file and directory paths;
 
 const app = express(); // returns an instance of an Express Application;
 
 app.use(morgan('dev')); // using the 'dev' format for morgan;
 app.use(express.json()); // a body parser for JSON data;
+app.use(cors()); // will allow cross-origin requests;
+app.options('*', cors()); // will allow cross-origin requests for all HTTP methods;
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public/index.html'))); // will handle all GET requests that are sent to the root path;
 
