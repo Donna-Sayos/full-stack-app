@@ -2,7 +2,6 @@ const chalk = require("chalk");
 const dotenv = require("dotenv");
 const express = require("express");
 const morgan = require("morgan");
-const bodyParser = require("body-parser");
 const logger = require("./utils/logger");
 
 const userRoutes = require("./routers/user");
@@ -12,11 +11,17 @@ dotenv.config({ path: "./server/config/config.env" }); // loads environment vari
 const app = express();
 
 app.use(morgan("dev"));
-app.use(bodyParser.json()); // this is for parsing JSON encoded bodies (as sent by API clients)
-app.use(bodyParser.urlencoded({ extended: false })); // this is for parsing URL encoded bodies (as sent by HTML forms) .urlencoded() takes an option object that allows you to choose between parsing the URL-encoded data with the querystring library (when false) or the qs library (when true);
+app.use(express.json()); // this is for parsing application/json which means that the values of the object that is being sent to the server are in JSON format;
+app.use(express.urlencoded({ extended: false })); // this is for parsing application/x-www-form-urlencoded which means that the values of the object that is being sent to the server are encoded in a URL format;
+
 app.use(logger);
 
 app.use("/api/v1/users", userRoutes);
+
+app.use('/', (req, res) => { // test route;
+  res.send("Hello World!");
+});
+
 
 const PORT = process.env.PORT || 4001;
 
@@ -28,9 +33,7 @@ const server = app.listen(PORT, () => {
   );
 });
 
-process.on("unhandledRejection", (err) => {
-  // takes an EVENT and a CALLBACK; the "unhandledRejection" event is emitted whenever a Promise is rejected and no error handler is attached to the promise;
+process.on("unhandledRejection", (err) => { // this is for handling unhandled promise rejections;
   console.error(`Error: ${err.message}`);
   server.close(() => process.exit(1)); // server.close() is returned by app.listen() and is used to close the server;
-  // it takes a callback that exits the process with a non-zero exit code which meant that the process failed due to an unhandled promise rejection;
 });
