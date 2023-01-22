@@ -5,6 +5,8 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const logger = require("./utils/logger");
 
+const userRoutes = require("./routers/user");
+
 dotenv.config({ path: "./server/config/config.env" }); // loads environment variables from a .env file into process.env;
 
 const app = express();
@@ -14,9 +16,7 @@ app.use(bodyParser.json()); // this is for parsing JSON encoded bodies (as sent 
 app.use(bodyParser.urlencoded({ extended: false })); // this is for parsing URL encoded bodies (as sent by HTML forms) .urlencoded() takes an option object that allows you to choose between parsing the URL-encoded data with the querystring library (when false) or the qs library (when true);
 app.use(logger);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use("/api/v1/users", userRoutes);
 
 const PORT = process.env.PORT || 4001;
 
