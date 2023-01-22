@@ -1,5 +1,7 @@
-const getAllUsers = "SELECT * FROM users";
+const getUsers_ = "SELECT * FROM users";
+const getUserById_ = "SELECT * FROM users WHERE id = $1;"
 
 module.exports = {
-  getAllUsers,
+    getUsers_,
+    getUserById_,
 };
