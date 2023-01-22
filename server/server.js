@@ -30,7 +30,7 @@ const server = app.listen(PORT, () => {
 
 process.on("unhandledRejection", (err) => {
   // takes an EVENT and a CALLBACK; the "unhandledRejection" event is emitted whenever a Promise is rejected and no error handler is attached to the promise;
-  console.log(`Error: ${err.message}`);
+  console.error(`Error: ${err.message}`);
   server.close(() => process.exit(1)); // server.close() is returned by app.listen() and is used to close the server;
   // it takes a callback that exits the process with a non-zero exit code which meant that the process failed due to an unhandled promise rejection;
 });

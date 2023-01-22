@@ -5,7 +5,13 @@ const getUsers = (req, res, next) => {
     if (err) {
       throw new Error(`Error getting all users: ${err.message}`);
     }
-    res.status(200).json(results.rows);
+    res.status(200).json({
+        status: "success",
+        results: results.rows.length,
+        data: {
+            users: results.rows,
+        }
+    })
   });
 };
 
