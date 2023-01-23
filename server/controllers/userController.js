@@ -32,7 +32,7 @@ const getUserById = (req, res, next) => {
 };
 
 const addUser = (req, res, next) => {
-  const { username, fullname, email, password, age, address, dob, gender } =
+  const { username, fullname, email, age, address, dob, gender, hashed_password } =
     req.body;
   pool.query(
     queries.checkEmailUsernameExist_,
@@ -53,7 +53,7 @@ const addUser = (req, res, next) => {
       }
       pool.query(
         queries.addUser_,
-        [username, fullname, email, password, age, address, dob, gender],
+        [username, fullname, email, age, address, dob, gender, hashed_password],
         (err, results) => {
           if (err) {
             console.error(`Error adding user: ${err.message}`);
@@ -98,7 +98,7 @@ const deleteUser = (req, res, next) => {
 
 const updateUser = (req, res, next) => {
   const ID = parseInt(req.params.id);
-  const { username, fullname, email, password, age, address, dob, gender } =
+  const { username, fullname, email, age, address, dob, gender, hashed_password } =
     req.body;
   pool.query(queries.getUserById_, [ID], (err, results) => {
     const noUserFound = results.rowCount === 0;
@@ -116,7 +116,7 @@ const updateUser = (req, res, next) => {
     } else {
       pool.query(
         queries.updateUser_,
-        [username, fullname, email, password, age, address, dob, gender, ID],
+        [username, fullname, email, age, address, dob, gender, hashed_password, ID],
         (err, results) => {
           if (err) {
             console.error(`Error updating user with ID ${ID}: ${err.message}`);
