@@ -15,14 +15,34 @@ app.use(morgan("dev"));
 app.use(express.json()); // this is for parsing application/json which means that the values of the object that is being sent to the server are in JSON format;
 app.use(express.urlencoded({ extended: false })); // this is for parsing application/x-www-form-urlencoded which means that the values of the object that is being sent to the server are encoded in a URL format;
 app.use(logger);
+app.use(express.static(path.join(__dirname, "..", "public")));
 
-const userRoutes = require("./routers/user");
 
-app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/users", require("./routers/user"));
 
-app.use("/", (req, res) => {
-  // test route;
-  res.send("Hello World!");
+app.use("/", (req, res) =>
+res.sendFile(path.join(__dirname, "..", "public/index.html"))
+);
+
+
+app.use((req, res, next) => {
+  if (path.extname(req.path).length) {
+    const err = new Error("Not found");
+    err.status = 404;
+    next(err);
+  } else {
+    next();
+  }
+});
+
+app.use("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "..", "public/index.html"))
+);
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  console.error(err);
+  res.send(err.message || "Internal server error.");
 });
 
 const PORT = process.env.PORT || 4001;
