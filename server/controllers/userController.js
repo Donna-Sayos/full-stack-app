@@ -1,4 +1,4 @@
-const pool = require("../db/queries/db");
+const pool = require("../db");
 const queries = require("../db/queries/userQueries"); // this is the queries object that contains all the SQL queries;
 
 const getUsers = (req, res, next) => {
