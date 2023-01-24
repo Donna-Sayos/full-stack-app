@@ -26,7 +26,7 @@ res.sendFile(path.join(__dirname, "..", "public/index.html"))
 
 
 app.use((req, res, next) => {
-  if (path.extname(req.path).length) {
+  if (path.extname(req.path).length) { // if the path has an extension, then it is a file and not a route which means that it is not found;
     const err = new Error("Not found");
     err.status = 404;
     next(err);
@@ -35,11 +35,11 @@ app.use((req, res, next) => {
   }
 });
 
-app.use("*", (req, res) =>
+app.use("*", (req, res) => // this is for handling routes that are not found and just sends the index.html file;
   res.sendFile(path.join(__dirname, "..", "public/index.html"))
 );
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => { // this is for handling errors;
   res.status(err.status || 500);
   console.error(err);
   res.send(err.message || "Internal server error.");
