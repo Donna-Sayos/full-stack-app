@@ -26,7 +26,6 @@ app.use("/", (req, res) =>
 res.sendFile(join(__dirname, "..", "public/index.html"))
 );
 
-
 app.use((req, res, next) => {
   if (extname(req.path).length) { // if the path has an extension, then it is a file and not a route which means that it is not found;
     const err = new Error("Not found");

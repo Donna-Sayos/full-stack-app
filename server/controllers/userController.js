@@ -1,4 +1,5 @@
 const pool = require("../db");
+const bcrypt = require("bcrypt");
 const queries = require("../db/queries/userQueries"); // this is the queries object that contains all the SQL queries;
 
 const getUsers = async (req, res, next) => {
@@ -59,7 +60,8 @@ const getUserById = async (req, res, next) => {
 
 const addUser = async (req, res, next) => {
   try {
-    const { username, fullname, email, age, address, dob, gender, hashed_password } = req.body;
+    const { username, fullname, email, age, address, dob, gender, password } = req.body;
+    const hashed_password = await bcrypt.hash(password, 5);
     const checker = await pool.query(queries.checkEmailUsernameExist_, [
       username,
       email,
@@ -119,7 +121,8 @@ const updateUser = async (req, res, next) => {
   let ID;
   try {
     ID = parseInt(req.params.id);
-    const { username, fullname, email, age, address, dob, gender, hashed_password, user_id } = req.body;
+    const { username, fullname, email, age, address, dob, gender, password, user_id } = req.body;
+    const hashed_password = await bcrypt.hash(password, 5);
     const user = await pool.query(queries.getUserById_, [ID]);
     const noUserFound = user.rows.length === 0;
 
