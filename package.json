@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "start:dev": "npm run build:dev & npm run start-server",
-    "start-server": "JWT=shh nodemon index.js -e html,js,jsx,css --ignore public --ignore client"
+    "start-server": "nodemon index.js -e html,js,jsx,css --ignore public --ignore client"
   },
   "repository": {
     "type": "git",

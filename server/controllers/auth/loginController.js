@@ -21,6 +21,8 @@ const login = async (req, res, next) => {
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (isMatch) {
+        req.session.user = user; // this is for storing the user in the session;
+        req.session.save(); // this is for saving the session;
         res.status(200).json({
           status: "success",
           message: "User logged in successfully.",

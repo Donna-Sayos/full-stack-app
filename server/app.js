@@ -3,19 +3,29 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const { join, extname } = require("path");
 const logger = require("./utils/logger");
 
 dotenv.config({ path: "./server/config/config.env" }); // loads environment variables from a .env file into process.env;
 
 const app = express();
-const corsOptions = { credentials: true, methods: ["GET, POST"], origin: "*" };
+const corsOptions = { credentials: true, methods: ["GET, POST", "PUT", "DELETE"], origin: "http://localhost:4001" }; 
 
 app.use(morgan("dev"));
 app.use(cors(corsOptions));
 app.use(express.json()); // this is for parsing application/json which means that the values of the object that is being sent to the server are in JSON format;
-app.use(express.urlencoded({ extended: false })); // this is for parsing application/x-www-form-urlencoded which means that the values of the object that is being sent to the server are encoded in a URL format;
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: false })); // this is for parsing application/x-www-form-urlencoded which means that the values of the object that is being sent to the server are encoded in a URL format;
+app.use(session({
+  key: "user_sid", /// 'sid' stands for session id;
+  secret: process.env.SESSION_SECRET,
+  resave: false, 
+  saveUninitialized: false,
+  cookie: {
+    expires: 60 * 60 * 12, // 12 hours or half a day;
+  }
+}))
 app.use(logger);
 app.use(express.static(join(__dirname, "..", "public")));
 
