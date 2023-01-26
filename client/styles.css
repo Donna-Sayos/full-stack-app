@@ -1,0 +1,144 @@
+.panda {
+    border-radius: 85%;
+}
+
+#light .main {
+    background-image: linear-gradient( 95deg, rgba(173,252,234,1) 27%, rgba(192,229,246,1) 64%);
+    height: 100vh;
+}
+#dark .main {
+    background-image: linear-gradient(to right, #434343 60%, black 100%);
+    height: 100vh;
+}
+
+#light .form-container {
+    border-radius: 1.5rem;
+    background-color: rgba(222,194,203, 0.2);
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+}
+
+#dark .form-container {
+    border-radius: 1.5rem;
+    background-color: rgba(222,194,203, 0.4);
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+}
+
+#dark .sign-in {
+    color: #e0ac69;
+}
+#dark .inp {
+    color: #ffe39f;
+}
+#dark .checkbox {
+    color: 	#eac086;
+}
+
+#light .login {
+    color: 	#a67c00;
+    background-color: #FFE38C;
+    border: 1px solid #ecb939;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#light .login:hover {
+    color: white;
+    background-color: #ecb939;
+    border: 1px solid #BA9900;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+
+#dark .login {
+    color: #66545e;
+    background-color: #ffe0bd;
+    border: 1px solid #e4d5b7;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#dark .login:hover {
+    color: white;
+    background-color: #d9b99b;
+    border: 1px solid #be9b7b;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+
+
+#light .facebook {
+    background-color: #2389da;
+    border: 1px solid #0f5e9c;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#light .facebook:hover {
+    background-color: #74ccf4;
+    border: 1px solid #1ca3ec;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#light .fa-logo {
+    color: white;
+}
+
+#dark .facebook {
+    background-color: #abb1cf;
+    border: 1px solid #abb1cf;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#dark .facebook:hover {
+    background-color: #92a8d1;
+    border: 1px solid #92a8d1;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+.fa-logo {
+    color: white;
+}
+
+#light .google {
+    background-color: #d9534f;
+    border: 1px solid #740001;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#light .google:hover {
+    background-color: #ff5252;
+    border: 1px solid #ff0000;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#light .goo-logo {
+    color: white;
+}
+
+#dark .google {
+    background-color: #dec2cb;
+    border: 1px solid #f7cac9;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+#dark .google:hover {
+    background-color: #f7cac9;
+    border: 1px solid #c5b9cd;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+    transition: all 400ms ease;
+}
+.goo-logo {
+    color: white;
+}
+
+.switch {
+    display: flex;
+    width: 150vw;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 10px;
+}
+#dark .switch-label {
+    color:#f6d992;
+}
