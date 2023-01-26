@@ -3,7 +3,6 @@ const pool = require("../../db");
 const bcrypt = require("bcrypt");
 const queries = require("../../db/queries/userQueries");
 const jwt = require("jsonwebtoken");
-const checkToken = require("../../utils/checkToken");
 
 const login = async (req, res, next) => {
   try {
@@ -14,26 +13,22 @@ const login = async (req, res, next) => {
         message: "Missing required fields.",
       });
     }
-    const checker = await pool.query(queries.checkUsername, [
-      username,
-    ]);
+    const checker = await pool.query(queries.checkUsername, [username]);
     if (checker.rows.length > 0) {
       const user = checker.rows[0];
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (isMatch) {
-        req.session.user = user; // this is for storing the user in the session;
-        req.session.save(); // this is for saving the session until the user logs out or the session expires;
-
         const userId = user.user_id;
         const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
           expiresIn: process.env.JWT_EXPIRES_IN,
         });
-        console.log(token)
         res.status(200).json({
           status: "success",
           message: "User logged in successfully.",
-          token: checkToken(token),
+          auth: true,
+          token: token,
+          user: user,
         });
       } else {
         res.status(401).json({

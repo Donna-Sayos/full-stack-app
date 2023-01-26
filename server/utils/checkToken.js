@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const checkToken = async (req, res, next) => {
-//   const token = req.headers.authorization;
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.headers["x-access-token"]; // x-access-token means that the token is sent in the headers of the request;
+  console.log("checkToken: token = ", token);
   if (!token) {
     return res.status(401).json({
       status: "fail",
@@ -11,16 +11,18 @@ const checkToken = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // decoded is the payload of the token and it contains the userId;
+    req.user = {
+      id: decoded.userId,
+      role: decoded.role,
+    };
     next(); // this is for moving on to the next middleware;
   } catch (err) {
     if (err.name === "TokenExpiredError") {
-      // refresh the token
-      const userId = req.user.userId;
-      const newToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN,
+      res.json({
+        status: "fail",
+        auth: false,
+        message: "Failed to authenticate token.",
       });
-      res.set("Authorization", newToken);
       next();
     } else {
       return res.status(401).json({
