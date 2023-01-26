@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const controller = require("../controllers/userController"); // this is the controller object that contains all the controller functions;
+const controller = require("../../../controllers/api/userController"); // this is the controller object that contains all the controller functions;
 
 router.get("/", controller.getUsers);
 router.post("/", controller.addUser);

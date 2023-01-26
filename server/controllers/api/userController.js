@@ -1,6 +1,6 @@
-const pool = require("../db");
+const pool = require("../../db");
 const bcrypt = require("bcrypt");
-const queries = require("../db/queries/userQueries"); // this is the queries object that contains all the SQL queries;
+const queries = require("../../db/queries/userQueries"); // this is the queries object that contains all the SQL queries;
 
 const getUsers = async (req, res, next) => {
   try {
@@ -60,7 +60,8 @@ const getUserById = async (req, res, next) => {
 
 const addUser = async (req, res, next) => {
   try {
-    const { username, fullname, email, age, address, dob, gender, password } = req.body;
+    const { username, fullname, email, age, address, dob, gender, password } =
+      req.body;
     const hashed_password = await bcrypt.hash(password, 5);
     const checker = await pool.query(queries.checkEmailUsernameExist_, [
       username,
@@ -73,12 +74,21 @@ const addUser = async (req, res, next) => {
         message: "User exists.",
       });
     } else {
-      await pool.query(queries.addUser_, [ username, fullname, email, age, address, dob, gender, hashed_password ]);
+      await pool.query(queries.addUser_, [
+        username,
+        fullname,
+        email,
+        age,
+        address,
+        dob,
+        gender,
+        hashed_password,
+      ]);
 
       res.status(201).json({
         status: "success",
         message: "User added successfully.",
-      })
+      });
     }
   } catch (err) {
     console.error(`Error adding user: ${err.message}`);
@@ -121,24 +131,45 @@ const updateUser = async (req, res, next) => {
   let ID;
   try {
     ID = parseInt(req.params.id);
-    const { username, fullname, email, age, address, dob, gender, password, user_id } = req.body;
+    const {
+      username,
+      fullname,
+      email,
+      age,
+      address,
+      dob,
+      gender,
+      password,
+      user_id,
+    } = req.body;
     const hashed_password = await bcrypt.hash(password, 5);
     const user = await pool.query(queries.getUserById_, [ID]);
     const noUserFound = user.rows.length === 0;
 
-   if (noUserFound) {
-    return res.status(404).json({
-      status: "fail",
-      message: "User does not exist in the database.",
-    });
-   } else {
-      await pool.query(queries.updateUser_, [ username, fullname, email, age, address, dob, gender, hashed_password, user_id, ID ]);
+    if (noUserFound) {
+      return res.status(404).json({
+        status: "fail",
+        message: "User does not exist in the database.",
+      });
+    } else {
+      await pool.query(queries.updateUser_, [
+        username,
+        fullname,
+        email,
+        age,
+        address,
+        dob,
+        gender,
+        hashed_password,
+        user_id,
+        ID,
+      ]);
 
       res.status(200).json({
         status: "success",
         message: "User updated successfully.",
       });
-   }
+    }
   } catch (err) {
     console.error(`Error updating user with ID ${ID}: ${err.message}`);
     res.status(500).json({

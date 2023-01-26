@@ -3,7 +3,7 @@ const getUsers_ = "SELECT * FROM users";
 const getUserById_ = "SELECT * FROM users WHERE id = $1;";
 
 const checkEmailUsernameExist_ =
-  "SELECT s FROM users s WHERE s.username = $1 OR s.email = $2;";
+  "SELECT s FROM users s WHERE s.username = ? OR s.email = ?;";
 
 const addUser_ =
   "INSERT INTO users (username, fullname, email, age, address, dob, gender, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);";

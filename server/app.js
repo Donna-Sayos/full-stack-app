@@ -9,7 +9,7 @@ const logger = require("./utils/logger");
 dotenv.config({ path: "./server/config/config.env" }); // loads environment variables from a .env file into process.env;
 
 const app = express();
-const corsOptions = { credentials: true, origin: '*' };
+const corsOptions = { credentials: true, methods: ["GET, POST"], origin: "*" };
 
 app.use(morgan("dev"));
 app.use(cors(corsOptions));
@@ -19,15 +19,16 @@ app.use(cookieParser());
 app.use(logger);
 app.use(express.static(join(__dirname, "..", "public")));
 
-
-app.use("/api/v1/users", require("./routers/user"));
+app.use("/auth/v1", require("./routers/auth/index"));
+app.use("/api/v1", require("./routers/api/index"));
 
 app.use("/", (req, res) =>
-res.sendFile(join(__dirname, "..", "public/index.html"))
+  res.sendFile(join(__dirname, "..", "public/index.html"))
 );
 
 app.use((req, res, next) => {
-  if (extname(req.path).length) { // if the path has an extension, then it is a file and not a route which means that it is not found;
+  if (extname(req.path).length) {
+    // if the path has an extension, then it is a file and not a route which means that it is not found;
     const err = new Error("Not found");
     err.status = 404;
     next(err);
@@ -36,11 +37,16 @@ app.use((req, res, next) => {
   }
 });
 
-app.use("*", (req, res) => // this is for handling routes that are not found and just sends the index.html file;
-  res.sendFile(join(__dirname, "..", "public/index.html"))
+app.use(
+  "*",
+  (
+    req,
+    res // this is for handling routes that are not found and just sends the index.html file;
+  ) => res.sendFile(join(__dirname, "..", "public/index.html"))
 );
 
-app.use((err, req, res, next) => { // this is for handling errors;
+app.use((err, req, res, next) => {
+  // this is for handling errors;
   res.status(err.status || 500);
   console.error(err);
   res.send(err.message || "Internal server error.");
