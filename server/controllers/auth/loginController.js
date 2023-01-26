@@ -5,35 +5,37 @@ const jwt = require("jsonwebtoken");
 const session = require("express-session");
 
 const login = async (req, res, next) => {
-  console.log("login function called"); // added console log statement
   try {
-    const { username, email, password } = req.body;
-    console.log("req.body: ", req.body); // added console log statement
-    const checker = await pool.query(queries.checkEmailUsernameExist_, [
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Missing required fields.",
+      });
+    }
+    const checker = await pool.query(queries.checkUsername, [
       username,
-      email,
     ]);
-    console.log("checker: ", checker); // added console log statement
-
     if (checker.rows.length > 0) {
       const user = checker.rows[0];
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (isMatch) {
-        console.log("password match"); // added console log statement
         res.status(200).json({
           status: "success",
           message: "User logged in successfully.",
         });
       } else {
-        console.log("password do not match"); // added console log statement
         res.status(401).json({
           status: "fail",
           message: "Incorrect password.",
         });
       }
     } else {
-      console.log("email or username incorrect"); // added console log statement
+      res.status(401).json({
+        status: "fail",
+        message: "Incorrect username.",
+      });
     }
   } catch (err) {
     console.error(`Error logging in user: ${err.message}`);
