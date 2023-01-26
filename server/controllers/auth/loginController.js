@@ -1,8 +1,9 @@
+require("dotenv").config({ path: "./server/config/config.env" });
 const pool = require("../../db");
 const bcrypt = require("bcrypt");
 const queries = require("../../db/queries/userQueries");
 const jwt = require("jsonwebtoken");
-const session = require("express-session");
+const checkToken = require("../../utils/checkToken");
 
 const login = async (req, res, next) => {
   try {
@@ -22,10 +23,17 @@ const login = async (req, res, next) => {
 
       if (isMatch) {
         req.session.user = user; // this is for storing the user in the session;
-        req.session.save(); // this is for saving the session;
+        req.session.save(); // this is for saving the session until the user logs out or the session expires;
+
+        const userId = user.user_id;
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+          expiresIn: process.env.JWT_EXPIRES_IN,
+        });
+        console.log(token)
         res.status(200).json({
           status: "success",
           message: "User logged in successfully.",
+          token: checkToken(token),
         });
       } else {
         res.status(401).json({
