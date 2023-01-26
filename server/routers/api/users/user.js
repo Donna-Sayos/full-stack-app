@@ -2,11 +2,12 @@ const router = require("express").Router();
 
 const controller = require("../../../controllers/api/userController"); // this is the controller object that contains all the controller functions;
 const checkAdmin = require("../../../utils/isAdmin");
+const checkToken = require("../../../utils/checkToken");
 
-router.get("/", checkAdmin, controller.getUsers);
-router.post("/", checkAdmin, controller.addUser);
-router.get("/:id", checkAdmin, controller.getUserById);
-router.put("/:id", controller.updateUser);
-router.delete("/:id", controller.deleteUser);
+router.get("/", checkToken, checkAdmin, controller.getUsers);
+router.post("/", checkToken, checkAdmin, controller.addUser);
+router.get("/:id", checkToken, checkAdmin, controller.getUserById);
+router.put("/:id", checkToken, controller.updateUser);
+router.delete("/:id", checkToken, controller.deleteUser);
 
 module.exports = router;
